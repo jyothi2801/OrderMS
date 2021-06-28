@@ -4,8 +4,8 @@ env:
   secrets-manager:
     LOGIN: SonarCredentials:sonartoken
     HOST: SonarCredentials:host
-    Organization: SonarCredentials:organization
-    Project: SonarCredentials:projectKey
+    Organization: SonarCredentials:organisation
+    Project: SonarCredentials:projectkey
 
 phases:
   install:
@@ -15,7 +15,8 @@ phases:
     commands:
       - echo Logging into Amazon ECR
       - aws --version
-      - $(aws ecr get-login --no-include-email --region us-east-2)
+      - #$(aws ecr get-login --no-include-email --region us-east-2)
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 321325620220.dkr.ecr.us-east-2.amazonaws.com
       - REPOSITORY_URI=824342811803.dkr.ecr.us-east-2.amazonaws.com/usermanagement
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
